@@ -11,11 +11,26 @@ const app = createApp({
     };
   },
   methods: {
+    checkUser() {
+      const api = `${site}/api/user/check`;
+      axios
+        .post(api)
+        .then((res) => {
+          console.log(res.data.success);
+          if (res.data.success) {
+            this.getData();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          window.location = "index.html";
+        });
+    },
     getData() {
       const api = `${site}/api/${api_path}/admin/products/all`;
       axios.get(api).then((res) => {
         this.products = res.data.products;
-        // console.log(this.products);
+        console.log(this.products);
       });
     },
   },
@@ -25,7 +40,8 @@ const app = createApp({
       "$1"
     );
     axios.defaults.headers.common["Authorization"] = token;
-    this.getData();
+    this.checkUser();
+    // this.getData();
   },
 });
 
